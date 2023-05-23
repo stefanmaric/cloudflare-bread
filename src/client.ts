@@ -1,6 +1,6 @@
 import type { paths as CloudflarePaths } from '../types/cloudflare'
 
-import { ClientOptions, _createClient } from "./bread"
+import { ClientOptions, Wrapper, _createClient } from "./bread"
 
 /**
  * Create a Cloudflare API v4 client.
@@ -28,7 +28,7 @@ import { ClientOptions, _createClient } from "./bread"
  * }
  *
  */
-export const createClient = (options: Partial<ClientOptions> & { token: string }) => {
+export const createClient = (options: Partial<ClientOptions> & { token: string }): Wrapper<CloudflarePaths> => {
   const { token, middleware, ...context } = options
 
   return _createClient<CloudflarePaths>({

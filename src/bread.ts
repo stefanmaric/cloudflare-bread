@@ -226,7 +226,7 @@ type Accessor<Paths extends {}, Prefix extends string> = Paths extends Record<
   ? FetchOperations<Paths[`/${Prefix}`]>
   : never
 
-type Wrapper<Paths extends {}> = {
+export type Wrapper<Paths extends {}> = {
   [K in NextSegments<Paths> as RenameParam<K>]: K extends PathParam
     ? (value: string) => Accessor<Paths, K>
     : Accessor<Paths, K>
