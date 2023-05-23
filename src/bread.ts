@@ -232,8 +232,6 @@ type Wrapper<Paths extends {}> = {
     : Accessor<Paths, K>
 }
 
-const ClientState = Symbol('ClientState')
-
 export type ClientOptions = {
   middleware?: (url: URL, init: RequestInit) => Promise<[URL, RequestInit]> | [URL, RequestInit]
   baseUrl: string
@@ -242,6 +240,8 @@ export type ClientOptions = {
 type ClientContext = Required<ClientOptions> & {
   [ClientState]: string[]
 }
+
+const ClientState = Symbol('ClientState')
 
 const wrapper = (context: ClientContext): {} => {
   const next: ClientContext = { ...context, [ClientState]: [...context[ClientState]] }
@@ -267,7 +267,7 @@ const wrapper = (context: ClientContext): {} => {
               fullUrl.search = new URLSearchParams(init.searchParams).toString()
             }
 
-            fetch(...(await next.middleware(fullUrl, { ...init, method: prop })))
+            return fetch(...(await next.middleware(fullUrl, { ...init, method: prop })))
           }
         }
 
