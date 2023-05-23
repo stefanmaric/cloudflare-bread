@@ -257,6 +257,7 @@ const wrapper = (context: ClientContext): {} => {
         if (typeof prop !== 'string') return target[prop as keyof typeof target]
 
         if (METHODS.some((method) => `$${method}` === prop)) {
+          const method = prop.slice(1).toUpperCase()
           const baseUrl = new URL(next.baseUrl)
           baseUrl.pathname = `${baseUrl.pathname.replace(/\/$/, '')}/${next[ClientState].join('/')}`
 
@@ -268,7 +269,7 @@ const wrapper = (context: ClientContext): {} => {
               fullUrl.search = new URLSearchParams(searchParams).toString()
             }
 
-            return fetch(...(await next.middleware(fullUrl, { ...fetchOptions, method: prop })))
+            return fetch(...(await next.middleware(fullUrl, { ...fetchOptions, method })))
           }
         }
 
