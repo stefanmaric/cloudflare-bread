@@ -21,7 +21,7 @@
     "fetch"
   ],
   "private": false,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "main": "./dist/cloudflare-bread.umd.cjs",
   "module": "./dist/cloudflare-bread.js",
