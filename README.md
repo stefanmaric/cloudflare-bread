@@ -6,6 +6,14 @@ JavaScript fetch API client for Cloudflare's API with TypeScript definitions gen
 
 Alpha: being used in certain non-critical applications
 
+## "bread" meaning
+
+Browse
+Read
+Edit
+Add
+Delete
+
 ## Usage
 
 Install with your package manager of choice:
