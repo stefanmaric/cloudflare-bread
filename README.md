@@ -6,7 +6,7 @@ JavaScript fetch API client for Cloudflare's API with TypeScript definitions gen
 
 Alpha: being used in certain non-critical applications
 
-## "bread" meaning
+## "BREAD" meaning
 
 Browse
 Read
