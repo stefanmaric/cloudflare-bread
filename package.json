@@ -21,7 +21,7 @@
     "fetch"
   ],
   "private": false,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "main": "./dist/cloudflare-bread.umd.cjs",
   "module": "./dist/cloudflare-bread.js",
@@ -49,6 +49,5 @@
     "vite-plugin-dts": "^2.3.0",
     "vitest": "^0.31.1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
