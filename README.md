@@ -1,6 +1,6 @@
 # cloudflare-bread
 
-JavaScript fetch API client for Cloudflare's API with TypeScript definitions generated from the new Cloudflare's OpenAPI schema.
+JavaScript fetch API client for Cloudflare's API with TypeScript definitions generated automatically from the new [Cloudflare's OpenAPI schema](https://developers.cloudflare.com/api/).
 
 ## Project status
 
