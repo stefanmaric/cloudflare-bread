@@ -41,6 +41,12 @@ if (response.status === 200) {
 }
 ```
 
+## TODO
+
+- [ ] Collapse different params on the same position into a single one.
+- [ ] Fix `searchParams` being required even tho none of the params are actually required
+- [ ] Improve types of middleware
+
 ## License
 
 MIT, see [LICENSE](./LICENSE)
