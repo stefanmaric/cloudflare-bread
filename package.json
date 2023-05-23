@@ -36,16 +36,19 @@
     "dist"
   ],
   "scripts": {
-    "generate": "openapi --name CloudflareBread --useUnionTypes --useOptions --input ./cloudflare.json --output ./generated",
-    "build": "vite build"
+    "codegen": "openapi-typescript ./schemas/cloudflare.json --output ./types/cloudflare.ts --alphabetize --export-type",
+    "build": "vite build",
+    "test": "vitest",
+    "typecheck": "tsc"
   },
   "devDependencies": {
-    "@types/node": "^18.11.9",
-    "typescript": "^4.6.4",
-    "vite": "^3.2.3",
-    "vite-plugin-dts": "^1.7.1"
+    "openapi-typescript": "^6.2.4",
+    "type-fest": "^3.11.0",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.8",
+    "vite-plugin-dts": "^2.3.0",
+    "vitest": "^0.31.1"
   },
   "dependencies": {
-    "openapi-typescript-codegen": "^0.23.0"
   }
 }

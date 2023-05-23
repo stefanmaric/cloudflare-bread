@@ -4,7 +4,7 @@ JavaScript fetch API client for Cloudflare's API with TypeScript definitions gen
 
 ## Project status
 
-Pre-alpha
+Alpha: being used in certain non-critical applications
 
 ## Usage
 
@@ -25,37 +25,21 @@ pnpm install cloudflare-bread
 Use the API and get type definitions:
 
 ```typescript
-import { CloudflareBread } from 'cloudflare-bread'
+import { createClient } from 'cloudflare-bread'
 
-const cfClient = new CloudflareBread({
-  TOKEN: () => process.env.CF_TOKEN,
-})
+const client = createClient({ token: process.env.CLOUDFLARE_API_TOKEN })
 
-const response = await cfClient.workersKvNamespace.workersKvNamespaceCreateANamespace({
-  accountIdentifier: '<your CF account ID>',
-  requestBody: {
-    title: 'MY_KV_DATABASE'
+const response = await client.zones.zoneIdentifier('example.com').dns_records.$get({
+  searchParams: {
+    type: 'CNAME'
   }
 })
 
-console.log(response.result)
+if (response.status === 200) {
+  const results = await response.json()
+  //    ^? this will be typed
+}
 ```
-
-## The OpenAPI Schema and generated files
-
-At this point in time, Cloudflare's OpenAPI schema file has a few issues so I had to include it in the repo to apply modifications, some examples:
-
-* `organization` references pointing to external schemas
-* Many object definitions missing the `"type": "object"` declaration
-
-On a similar note, `openapi-typescript-codegen` has troubles in a few areas so I had to check-in the generated files as well to apply manual fixes, among them:
-
-* Gets confused about the `object` type of DurableObjects, exports an `any` model. Rename to `_object` and fix imports
-* Even tho it generates the `_class.ts` model for Cloudflare's account class type, imports are broken. Fix them.
-* Generates duplicated re-exports. Delete duplicated.
-* `Host` vs `host` models confuses TypeScript even when `forceConsistentCasingInFileNames` is set to `false` in the `tsconfig.json`. Add `@ts-ignore`
-
-I plan on notifying about these issues to both, Cloudflare and `openapi-typescript-codegen` so these files can be eventually removed from the repo.
 
 ## License
 

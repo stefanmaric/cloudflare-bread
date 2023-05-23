@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     target: 'esnext',
     lib: {
-      entry: resolve(__dirname, 'generated/index.ts'),
+      entry: resolve(__dirname, 'src/client.ts'),
       name: 'cloudflare-bread',
       fileName: 'cloudflare-bread',
     },
