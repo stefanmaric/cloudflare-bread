@@ -261,13 +261,14 @@ const wrapper = (context: ClientContext): {} => {
           baseUrl.pathname = `${baseUrl.pathname.replace(/\/$/, '')}/${next[ClientState].join('/')}`
 
           return async (init?: RequestInit & { searchParams?: Record<string, string> }) => {
+            const { searchParams, ...fetchOptions } = init ?? {}
             const fullUrl = new URL(baseUrl)
 
-            if (init?.searchParams) {
-              fullUrl.search = new URLSearchParams(init.searchParams).toString()
+            if (searchParams) {
+              fullUrl.search = new URLSearchParams(searchParams).toString()
             }
 
-            return fetch(...(await next.middleware(fullUrl, { ...init, method: prop })))
+            return fetch(...(await next.middleware(fullUrl, { ...fetchOptions, method: prop })))
           }
         }
 
