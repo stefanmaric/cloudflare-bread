@@ -36,7 +36,7 @@
     "dist"
   ],
   "scripts": {
-    "codegen": "openapi-typescript ./schemas/cloudflare.json --output ./types/cloudflare.ts --alphabetize --export-type",
+    "codegen": "openapi-typescript ./schemas/cloudflare.yaml --output ./types/cloudflare.ts --alphabetize --export-type",
     "build": "vite build",
     "test": "vitest",
     "typecheck": "tsc"
