@@ -148,7 +148,7 @@ type DecoratedFetcherArgs<T extends PathItemObject[HttpMethod]> = T extends
         (T extends { parameters: { query: {} } }
           ? { searchParams: T['parameters']['query'] }
           : {}) &
-        (T extends { parameters: { header: {} } } ? { headers: T['parameters']['header'] } : {})
+        (T extends { parameters: { header: {} } } ? { headers: T['parameters']['header'] } : {}),
     ]
   : [Omit<RequestInit, 'method'>] | []
 
@@ -214,7 +214,6 @@ type ClearBraces<T extends string> = T extends `{${infer Rest}`
  */
 type RenameParam<T extends string> = T extends PathParam ? CamelCase<ClearBraces<T>> : T
 
-
 type Accessor<Paths extends {}, Prefix extends string> = Paths extends Record<
   `/${Prefix}/${string}`,
   PathItemObject
@@ -269,20 +268,20 @@ const wrapper = (context: ClientContext): {} => {
               fullUrl.search = new URLSearchParams(searchParams).toString()
             }
 
-            return fetch(...(await next.middleware(fullUrl, { ...fetchOptions, method })))
+            const params = await next.middleware(fullUrl, { ...fetchOptions, method })
+            return fetch(...params)
           }
         }
 
-        next[ClientState].push(prop)
-        return wrapper(next)
+        return wrapper({ ...next, [ClientState]: [...next[ClientState], prop] })
       },
-    }
+    },
   )
 }
 
 // The Pick<X, keyof X> is a hack to make the wrapper work with interfaces (vs type aliases)
 export const _createClient = <Paths extends {}>(
-  options: ClientOptions
+  options: ClientOptions,
 ): Wrapper<Pick<Paths, keyof Paths>> => {
   return wrapper({
     middleware: (url, init) => [url, init],
