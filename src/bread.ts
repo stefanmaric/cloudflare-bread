@@ -135,21 +135,27 @@ type PickAndClip<Paths extends {}, Prefix extends string> = ClipKeys<PickPaths<P
  */
 type PickAndWrap<Paths extends {}, Prefix extends string> = Wrapper<PickAndClip<Paths, Prefix>>
 
+type OptionalFetcherOptions<T extends PathItemObject[HttpMethod]> = Omit<RequestInit, 'method'> &
+  (T extends { parameters: { query: {} } }
+    ? { searchParams: T['parameters']['query'] }
+    : T extends { parameters: { query?: {} } }
+    ? { searchParams?: T['parameters']['query'] }
+    : {}) &
+  (T extends { parameters: { header: {} } }
+    ? { headers: T['parameters']['header'] }
+    : T extends { parameters: { header?: {} } }
+    ? { headers?: T['parameters']['header'] }
+    : {})
+
 /**
  * Customize the arguments of a fetch call based on the parameters defined in the OpenAPI schema.
  */
 type DecoratedFetcherArgs<T extends PathItemObject[HttpMethod]> = T extends
-  | {
-      parameters: { query: {} }
-    }
+  | { parameters: { query: {} } }
   | { parameters: { header: {} } }
-  ? [
-      Omit<RequestInit, 'method'> &
-        (T extends { parameters: { query: {} } }
-          ? { searchParams: T['parameters']['query'] }
-          : {}) &
-        (T extends { parameters: { header: {} } } ? { headers: T['parameters']['header'] } : {}),
-    ]
+  ? [OptionalFetcherOptions<T>]
+  : T extends { parameters: { query?: {} } } | { parameters: { header?: {} } }
+  ? [OptionalFetcherOptions<T>] | []
   : [Omit<RequestInit, 'method'>] | []
 
 /**

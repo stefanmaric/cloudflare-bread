@@ -31,8 +31,8 @@ const client = createClient({ token: process.env.CLOUDFLARE_API_TOKEN })
 
 const response = await client.zones.zoneIdentifier('example.com').dns_records.$get({
   searchParams: {
-    type: 'CNAME'
-  }
+    type: 'CNAME',
+  },
 })
 
 if (response.status === 200) {
@@ -44,7 +44,7 @@ if (response.status === 200) {
 ## TODO
 
 - [ ] Collapse different params on the same position into a single one.
-- [ ] Fix `searchParams` being required even tho none of the params are actually required
+- [x] Fix `searchParams` being required even tho none of the params are actually required
 - [ ] Improve types of middleware
 
 ## License
