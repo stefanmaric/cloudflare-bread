@@ -1,6 +1,6 @@
 import type { paths as CloudflarePaths } from '../types/cloudflare'
 
-import { ClientOptions, Wrapper, _createClient } from "./bread"
+import { ClientOptions, Wrapper, _createClient } from './bread'
 
 /**
  * Create a Cloudflare API v4 client.
@@ -28,7 +28,9 @@ import { ClientOptions, Wrapper, _createClient } from "./bread"
  * }
  *
  */
-export const createClient = (options: Partial<ClientOptions> & { token: string }): Wrapper<CloudflarePaths> => {
+export const createClient = (
+  options: Partial<ClientOptions> & { token: string },
+): Wrapper<CloudflarePaths> => {
   const { token, middleware, ...context } = options
 
   return _createClient<CloudflarePaths>({
@@ -41,3 +43,31 @@ export const createClient = (options: Partial<ClientOptions> & { token: string }
     ...context,
   })
 }
+
+const init = async () => {
+  const token = process.env.CLOUDFLARE_API_TOKEN as string
+  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID as string
+
+  const client = createClient({
+    token,
+  })
+
+  const account = client.accounts.accountIdentifier(accountId)
+  const { scripts, domains } = account.workers
+  const scrpts = await (await scripts.$get()).json()
+  console.log(scrpts)
+  const dmns = await (await domains.$get()).json()
+  console.log(dmns)
+
+  const user = await (await client.user.$get({})).json()
+
+  const hue = await client.radar.dns.top.ases.$get({
+    searchParams: {
+      domain: ['hue.com'],
+    },
+  })
+
+  console.log(user)
+}
+
+init().then(console.log).catch(console.error)
