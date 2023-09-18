@@ -42,11 +42,16 @@
     "typecheck": "tsc"
   },
   "devDependencies": {
-    "openapi-typescript": "^6.2.4",
-    "type-fest": "^3.11.0",
-    "typescript": "^5.0.4",
-    "vite": "^4.3.8",
-    "vite-plugin-dts": "^3.0.2",
-    "vitest": "^0.32.2"
+    "openapi-typescript": "6.6.1",
+    "type-fest": "4.3.1",
+    "typescript": "5.2.2",
+    "vite": "4.4.9",
+    "vite-plugin-dts": "3.5.3",
+    "vitest": "0.34.4"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "openapi-typescript@6.6.1": "patches/openapi-typescript@6.6.1.patch"
+    }
   }
 }

@@ -1,0 +1,39 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index 891e9268237df5885bc40d22d0148b4999cd011b..316f2a2a7d9c0b7e5bededeee6660cee8bd6b179 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -1319,7 +1319,7 @@ function defaultSchemaObjectTransform(schemaObject, { path: path2, ctx }) {
+     return tsUnionOf(...items, ...schemaObject.nullable ? ["null"] : []);
+   }
+   const oneOf = typeof schemaObject === "object" && !schemaObject.discriminator && schemaObject.oneOf || schemaObject.enum || void 0;
+-  if (oneOf && !oneOf.some((t) => "$ref" in t && ctx.discriminators[t.$ref])) {
++  if (oneOf && !oneOf.some((t) => typeof t === 'object' && t !== null && "$ref" in t && ctx.discriminators[t.$ref])) {
+     const oneOfNormalized = oneOf.map((item) => transformSchemaObject(item, { path: path2, ctx }));
+     if (schemaObject.nullable)
+       oneOfNormalized.push("null");
+diff --git a/dist/transform/schema-object.js b/dist/transform/schema-object.js
+index f97b10aafb1d34dde70b9738e4f5415ba4083072..7599ecd27d25494bd83a8abddedc31533c34b2ee 100644
+--- a/dist/transform/schema-object.js
++++ b/dist/transform/schema-object.js
+@@ -47,7 +47,7 @@ export function defaultSchemaObjectTransform(schemaObject, { path, ctx }) {
+         return tsUnionOf(...items, ...(schemaObject.nullable ? ["null"] : []));
+     }
+     const oneOf = ((typeof schemaObject === "object" && !schemaObject.discriminator && schemaObject.oneOf) || schemaObject.enum || undefined);
+-    if (oneOf && !oneOf.some((t) => "$ref" in t && ctx.discriminators[t.$ref])) {
++    if (oneOf && !oneOf.some((t) => typeof t === 'object' && t !== null && "$ref" in t && ctx.discriminators[t.$ref])) {
+         const oneOfNormalized = oneOf.map((item) => transformSchemaObject(item, { path, ctx }));
+         if (schemaObject.nullable)
+             oneOfNormalized.push("null");
+diff --git a/src/transform/schema-object.ts b/src/transform/schema-object.ts
+index 70fe38b86f133330791a92cdd714827209b3db4b..94a6c0627a7268688044838e487cd4cddaaca7df 100644
+--- a/src/transform/schema-object.ts
++++ b/src/transform/schema-object.ts
+@@ -73,7 +73,7 @@ export function defaultSchemaObjectTransform(schemaObject: SchemaObject | Refere
+ 
+   // oneOf (no discriminator)
+   const oneOf = ((typeof schemaObject === "object" && !schemaObject.discriminator && schemaObject.oneOf) || schemaObject.enum || undefined) as (SchemaObject | ReferenceObject)[] | undefined; // note: for objects, treat enum as oneOf
+-  if (oneOf && !oneOf.some((t) => "$ref" in t && ctx.discriminators[t.$ref])) {
++  if (oneOf && !oneOf.some((t) => typeof t === 'object' && t !== null && "$ref" in t && ctx.discriminators[t.$ref])) {
+     const oneOfNormalized = oneOf.map((item) => transformSchemaObject(item, { path, ctx }));
+     if (schemaObject.nullable) oneOfNormalized.push("null");
+ 
